@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        header {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: #fff;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-right: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        li:hover {
+            transform: translateY(-5px);
+        }
+        h3 {
+            color: #3498db;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: #34495e;
+        }
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main>
+        <h2>Product List</h2>
+        <ul>
+            <% products.forEach(product => { %>
+                <li>
+                    <h3><%= product.name %></h3>
+                    <p>Price: $<%= product.price.toFixed(2) %></p>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
