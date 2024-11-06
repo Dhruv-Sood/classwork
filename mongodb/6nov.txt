@@ -1,0 +1,7 @@
+db.createCollection("students");
+db.students.insertOne({ name: "John", age: 20, grade: "B" });
+db.students.find();
+db.students.find({ age: { $gt: 18 } });
+db.students.find({ age: { $gt: 18, $lt: 23 } });
+db.students.updateOne({ name: "John" }, { $set: { grade: "A" } });
+db.students.deleteOne({ name: "Emily" });
