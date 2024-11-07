@@ -1,0 +1,294 @@
+Q1. **Find Eligible Employees**:
+    - You have an `employees` collection with fields `name`, `age`, `experience`, and `department`. Write a query to find employees who are either over 30 years old or have more than 5 years of experience.
+
+    use mongosh terminal and first create the collection
+
+A1-
+
+db.createCollection("employees")
+
+
+db.employees.insertMany([
+  {
+    name: "John Doe",
+    age: 35,
+    experience: 8,
+    department: "Engineering"
+  },
+  {
+    name: "Jane Smith", 
+    age: 28,
+    experience: 6,
+    department: "Marketing"
+  },
+  {
+    name: "Bob Wilson",
+    age: 42,
+    experience: 4,
+    department: "Sales"
+  },
+  {
+    name: "Alice Brown",
+    age: 25,
+    experience: 3,
+    department: "Engineering"
+  }
+])
+
+
+db.employees.find({
+  $or: [
+    { age: { $gt: 30 } },
+    { experience: { $gt: 5 } }
+  ]
+})
+
+Q2. **Verify Product Stock and Price**:
+    - In the `products` collection, documents have fields `product_name`, `stock`, and `price`. Find all products that are in stock (stock greater than 0) and priced below $50.
+
+A2.
+db.createCollection("products")
+
+db.products.insertMany([
+  {
+    product_name: "Basic T-Shirt",
+    stock: 100,
+    price: 19.99
+  },
+  {
+    product_name: "Designer Jeans", 
+    stock: 30,
+    price: 89.99
+  },
+  {
+    product_name: "Cotton Socks",
+    stock: 200,
+    price: 4.99
+  },
+  {
+    product_name: "Leather Wallet",
+    stock: 0,
+    price: 29.99
+  }
+])
+
+db.products.find({
+  $and: [
+    { stock: { $gt: 0 } },
+    { price: { $lt: 50 } }
+  ]
+})
+
+
+Q3: **Check Student Enrollment**:
+    - The `students` collection contains documents with `name`, `enrolled`, and `grade`. Write a query to find students who are not enrolled or whose grade is less than "C".
+
+A3:
+db.createCollection("students")
+
+db.students.insertMany([
+  {
+    name: "John Smith",
+    enrolled: true,
+    grade: "B"
+  },
+  {
+    name: "Mary Johnson",
+    enrolled: false, 
+    grade: "A"
+  },
+  {
+    name: "Bob Wilson",
+    enrolled: true,
+    grade: "D"
+  },
+  {
+    name: "Sarah Brown",
+    enrolled: true,
+    grade: "C"
+  }
+])
+
+db.students.find({
+  $or: [
+    { enrolled: false },
+    { grade: { $lt: "C" } }
+  ]
+})
+
+Q4. **Filter Courses with Duration and Instructor**:
+    - In the `courses` collection, find courses where either the `duration` is less than 6 weeks or the `instructor` field does not exist.
+
+A4:
+db.createCollection("courses")
+db.courses.insertMany([
+  {
+    name: "Web Development",
+    duration: 8,
+    instructor: "John Doe"
+  },
+  {
+    name: "Python Basics",
+    duration: 4,
+    instructor: "Jane Smith" 
+  },
+  {
+    name: "Data Science",
+    duration: 12
+  },
+  {
+    name: "Mobile Apps",
+    duration: 5,
+    instructor: "Bob Wilson"
+  }
+])
+
+db.courses.find({
+  $or: [
+    { duration: { $lt: 6 } },
+    { instructor: { $exists: false } }
+  ]
+})
+
+Q5. **Locate Absent Orders**:
+    - The `orders` collection has fields `order_id`, `status`, and `shipped_date`. Write a query to find orders where `status` is not "shipped" or `shipped_date` does not exist.
+A5:
+
+Q6. **Find Non-Engineering Employees**:
+    - Search the `employees` collection for entries where the `department` is neither "Engineering" nor "IT". Display their `name` and `department`.
+
+A6:
+db.createCollection("employees")
+db.employees.insertMany([
+  {
+    name: "John Smith",
+    department: "Engineering",
+    years: 5
+  },
+  {
+    name: "Sarah Jones", 
+    department: "Sales",
+    years: 3
+  },
+  {
+    name: "Mike Wilson",
+    department: "IT",
+    years: 2
+  },
+  {
+    name: "Emily Brown",
+    department: "Marketing",
+    years: 4
+  }
+])
+
+db.employees.find({
+  department: { 
+    $nin: ["Engineering", "IT"] 
+  }
+}, {
+  name: 1,
+  department: 1,
+  _id: 0
+})
+
+Q7. **Check Student Exam Eligibility**:
+    - The `students` collection has fields `name`, `exam_score`, and `participation`. Find students who scored less than 50 in the exam and did not participate in extracurricular activities.
+
+A7:
+db.students.insertMany([
+  {
+    name: "Alice",
+    exam_score: 45,
+    participation: false
+  },
+  {
+    name: "Bob",
+    exam_score: 75,
+    participation: false
+  },
+  {
+    name: "Charlie",
+    exam_score: 35,
+    participation: true
+  }
+])
+
+db.students.find({
+  $and: [
+    { exam_score: { $lt: 50 } },
+    { participation: false }
+  ]
+})
+
+Q8. **Mixed Department Filter**:
+    - Find employees in the `employees` collection whose `department` is "Sales" and who either have more than 3 years of experience or are younger than 25 years old.
+
+A8:
+db.employees.insertMany([
+  {
+    name: "Tom Harris",
+    department: "Sales",
+    years: 4,
+    age: 28
+  },
+  {
+    name: "Lisa Chen",
+    department: "Sales",
+    years: 2,
+    age: 23
+  }
+])
+
+db.employees.find({
+  $and: [
+    { department: "Sales" },
+    { $or: [
+      { years: { $gt: 3 } },
+      { age: { $lt: 25 } }
+    ]}
+  ]
+})
+
+Q9. **Inventory Check**:
+    - In the `inventory` collection, find items where either `price` exists and is less than $100 or the `stock` field is missing.
+
+A9:
+db.createCollection("inventory")
+db.inventory.insertMany([
+  {
+    item: "Notebook",
+    price: 75,
+    stock: 100
+  },
+  {
+    item: "Premium Pen",
+    price: 150,
+    stock: 50
+  },
+  {
+    item: "Pencil Set",
+    price: 25
+  }
+])
+
+db.inventory.find({
+  $or: [
+    { $and: [
+      { price: { $exists: true } },
+      { price: { $lt: 100 } }
+    ]},
+    { stock: { $exists: false } }
+  ]
+})
+
+Q10. **Uncommon Courses**:
+    - In the `courses` collection, find courses that are neither taught by "John Smith" nor have a duration longer than 10 weeks.
+
+A10:
+db.courses.find({
+  $nor: [
+    { instructor: "John Smith" },
+    { duration: { $gt: 10 } }
+  ]
+})
