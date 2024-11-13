@@ -1,0 +1,188 @@
+A-1:
+
+db.createCollection("orders")
+
+
+db.orders.insertMany([
+    {
+        orderId: 1,
+        orderTotal: 149.99,
+        orderStatus: "shipped",
+        customerName: "John Smith",
+        orderDate: new Date("2024-01-15")
+    },
+    {
+        orderId: 2,
+        orderTotal: 89.99,
+        orderStatus: "shipped", 
+        customerName: "Mary Johnson",
+        orderDate: new Date("2024-01-16")
+    },
+    {
+        orderId: 3,
+        orderTotal: 249.99,
+        orderStatus: "processing",
+        customerName: "Bob Wilson",
+        orderDate: new Date("2024-01-17")
+    },
+    {
+        orderId: 4,
+        orderTotal: 199.99,
+        orderStatus: "shipped",
+        customerName: "Sarah Davis",
+        orderDate: new Date("2024-01-18")
+    },
+    {
+        orderId: 5,
+        orderTotal: 75.99,
+        orderStatus: "shipped",
+        customerName: "Mike Brown",
+        orderDate: new Date("2024-01-19")
+    }
+])
+
+
+db.orders.find({
+    $and: [
+        { orderTotal: { $gt: 100 } },
+        { orderStatus: "shipped" }
+    ]
+})
+
+A-2:
+
+db.createCollection("sales")
+
+
+db.sales.insertMany([
+    {
+        saleId: 1,
+        category: "Electronics",
+        productName: "Smartphone",
+        quantity: 3,
+        price: 699.99,
+        date: new Date("2024-01-15")
+    },
+    {
+        saleId: 2,
+        category: "Clothing",
+        productName: "T-Shirt",
+        quantity: 5,
+        price: 24.99,
+        date: new Date("2024-01-15")
+    },
+    {
+        saleId: 3,
+        category: "Electronics",
+        productName: "Laptop",
+        quantity: 2,
+        price: 1299.99,
+        date: new Date("2024-01-16")
+    },
+    {
+        saleId: 4,
+        category: "Books",
+        productName: "Programming Guide",
+        quantity: 4,
+        price: 49.99,
+        date: new Date("2024-01-16")
+    },
+    {
+        saleId: 5,
+        category: "Clothing",
+        productName: "Jeans",
+        quantity: 3,
+        price: 79.99,
+        date: new Date("2024-01-17")
+    }
+])
+
+db.sales.aggregate([
+    {
+        $group: {
+            _id: "$category",
+            totalQuantity: { $sum: "$quantity" }
+        }
+    },
+    {
+        $project: {
+            category: "$_id",
+            totalQuantity: 1,
+            _id: 0
+        }
+    }
+])
+
+A-3:
+
+db.createCollection("users")
+db.createCollection("orders")
+
+// Insert sample users data
+db.users.insertMany([
+    {
+        userId: 1,
+        name: "John Smith",
+        email: "john@example.com",
+        location: "New York"
+    },
+    {
+        userId: 2, 
+        name: "Emma Wilson",
+        email: "emma@example.com",
+        location: "Los Angeles"
+    },
+    {
+        userId: 3,
+        name: "Michael Brown",
+        email: "michael@example.com", 
+        location: "Chicago"
+    }
+])
+
+// Insert sample orders data
+db.orders.insertMany([
+    {
+        orderId: 1,
+        userId: 1,
+        product: "Laptop",
+        amount: 1299.99,
+        date: new Date("2024-01-15")
+    },
+    {
+        orderId: 2,
+        userId: 1,
+        product: "Phone",
+        amount: 799.99,
+        date: new Date("2024-01-16")
+    },
+    {
+        orderId: 3,
+        userId: 2,
+        product: "Headphones",
+        amount: 199.99,
+        date: new Date("2024-01-17")
+    }
+])
+
+// Perform lookup to join users with their orders
+db.users.aggregate([
+    {
+        $lookup: {
+            from: "orders",
+            localField: "userId",
+            foreignField: "userId",
+            as: "userOrders"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            name: 1,
+            email: 1,
+            location: 1,
+            userOrders: 1
+        }
+    }
+])
+
